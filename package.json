@@ -13,13 +13,13 @@
     "template",
     "developer-tools"
   ],
-  "homepage": "https://github.com/REPLACE_OWNER/claude-flow-kit",
+  "homepage": "https://github.com/DenisKondrachukYi/claude-flow-kit",
   "bugs": {
-    "url": "https://github.com/REPLACE_OWNER/claude-flow-kit/issues"
+    "url": "https://github.com/DenisKondrachukYi/claude-flow-kit/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/REPLACE_OWNER/claude-flow-kit.git"
+    "url": "git+https://github.com/DenisKondrachukYi/claude-flow-kit.git"
   },
   "license": "MIT",
   "author": "Denis Kondrachuk",

@@ -19,7 +19,7 @@ claude-flow-kit/
 ## Development workflow
 
 ```bash
-git clone https://github.com/REPLACE_OWNER/claude-flow-kit
+git clone https://github.com/DenisKondrachukYi/claude-flow-kit
 cd claude-flow-kit
 npm install                  # no runtime deps; this just enables npm scripts
 

@@ -4,7 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/claude-flow-kit.svg)](https://www.npmjs.com/package/claude-flow-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/REPLACE_OWNER/claude-flow-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/REPLACE_OWNER/claude-flow-kit/actions/workflows/ci.yml)
+[![CI](https://github.com/DenisKondrachukYi/claude-flow-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisKondrachukYi/claude-flow-kit/actions/workflows/ci.yml)
 
 ## What it does
 

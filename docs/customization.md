@@ -97,7 +97,7 @@ For now, never-overwrite list is hardcoded in `src/lib/upgrade.js` — open an i
 Fork the repo, edit `src/template/`, publish as your own npm package:
 
 ```bash
-git clone https://github.com/REPLACE_OWNER/claude-flow-kit your-team-flow
+git clone https://github.com/DenisKondrachukYi/claude-flow-kit your-team-flow
 cd your-team-flow
 # edit src/template/CLAUDE.md, .claude/settings-variants/, etc.
 # update package.json: name, repository, etc.
