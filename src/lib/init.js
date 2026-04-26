@@ -78,7 +78,7 @@ export async function runInit({ targetDir, templateDir, flags, version }) {
   ok('Installed successfully.');
   hr();
 
-  if (!flags.noInstallDeps) printNextSteps(detectedStack, isNewDir);
+  if (!flags.noInstallDeps) printNextSteps(detectedStack, isNewDir, targetDir);
 
   return 0;
 }
@@ -123,7 +123,7 @@ async function prompt(q) {
   return answer.trim();
 }
 
-function printNextSteps(stack, isNewDir) {
+function printNextSteps(stack, isNewDir, targetDir) {
   process.stdout.write(`
 ${c.bold('Critical one-time setup')} (across all your projects):
 
@@ -183,10 +183,7 @@ ${c.bold('Recommended Claude Code plugins')} (run inside Claude):
 
   process.stdout.write(`${c.bold('Next steps')}:
 
-  ${c.cyan('1.')} Fill placeholders in CLAUDE.md, docs/project/*, docs/state/hot.md
-  ${c.cyan('2.')} ${c.dim('cd')} ${isNewDir ? c.cyan(targetDirOrCwd()) : c.dim('# stay here')}
-  ${c.cyan('3.')} ${c.dim('claude')}
-  ${c.cyan('4.')} ${c.green('> /start')}
+  ${c.cyan('1.')} Fill placeholders in CLAUDE.md, docs/project/*, docs/state/hot.md${isNewDir ? `\n  ${c.cyan('2.')} ${c.dim('cd')} ${c.cyan(targetDir)}\n  ${c.cyan('3.')} ${c.dim('claude')}\n  ${c.cyan('4.')} ${c.green('> /start')}` : `\n  ${c.cyan('2.')} ${c.dim('claude')}\n  ${c.cyan('3.')} ${c.green('> /start')}`}
 
 ${c.bold('Slash commands available')}:
 
@@ -211,6 +208,4 @@ ${c.bold('Standalone commands')}:
 `);
 }
 
-function targetDirOrCwd() {
-  return process.argv[3] || '.';
-}
+
