@@ -1,0 +1,40 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Step-by-step. Include `cfk doctor` output if relevant.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: claude-flow-kit version
+      description: 'Run `cfk --version` (or `npx claude-flow-kit --version`)'
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node.js version
+      description: 'Run `node --version`'
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: 'macOS 14.5, Ubuntu 22.04, etc.'
+    validations:
+      required: true

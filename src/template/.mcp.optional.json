@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json.schemastore.org/mcp.json",
+  "description": "Опційні MCP-сервери. Скопіюй у .mcp.json ті, які потрібні, або об'єднай через jq.",
+  "mcpServers": {
+    "serena": {
+      "description": "Semantic code search (IDE-like). Install: uvx --from git+https://github.com/oraios/serena serena",
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/oraios/serena", "serena"]
+    },
+    "spec-workflow": {
+      "description": "Full SDD workflow with web dashboard + VSCode extension (Pimzino)",
+      "command": "npx",
+      "args": ["-y", "@pimzino/spec-workflow-mcp@latest", "."]
+    },
+    "mcpvault": {
+      "description": "Obsidian vault access (AST-aware). Заміни VAULT_PATH на абсолютний шлях до твого vault.",
+      "command": "npx",
+      "args": ["-y", "@bitbonsai/mcpvault", "/Users/YOU/path/to/ObsidianVault"]
+    },
+    "memory": {
+      "description": "Persistent memory via knowledge graph (Anthropic official)",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "obsidian-claude-code": {
+      "description": "Obsidian plugin with WebSocket bridge on port 22360. Install plugin in Obsidian first.",
+      "command": "npx",
+      "args": ["-y", "obsidian-claude-code-mcp"]
+    }
+  }
+}

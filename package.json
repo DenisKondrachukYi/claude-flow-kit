@@ -1,0 +1,48 @@
+{
+  "name": "claude-flow-kit",
+  "version": "0.1.0",
+  "description": "Production-ready Claude Code project template with orchestration patterns, status dashboard, and stack-aware setup. Works on new and existing projects.",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "agents",
+    "orchestration",
+    "spec-driven-development",
+    "scaffolding",
+    "ai-coding",
+    "template",
+    "developer-tools"
+  ],
+  "homepage": "https://github.com/REPLACE_OWNER/claude-flow-kit",
+  "bugs": {
+    "url": "https://github.com/REPLACE_OWNER/claude-flow-kit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/REPLACE_OWNER/claude-flow-kit.git"
+  },
+  "license": "MIT",
+  "author": "Denis Kondrachuk",
+  "type": "module",
+  "bin": {
+    "claude-flow-kit": "./bin/cli.js",
+    "cfk": "./bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "node --test test/",
+    "lint:shell": "shellcheck src/template/.claude/scripts/*.sh",
+    "lint:json": "find src/template -name '*.json' -exec node -e 'JSON.parse(require(\"fs\").readFileSync(process.argv[1]))' {} \\;",
+    "smoke-test": "bash scripts/smoke-test.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "preferGlobal": true
+}

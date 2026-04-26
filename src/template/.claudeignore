@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+vendor/
+.venv/
+venv/
+Pods/
+.build/
+DerivedData/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+target/
+*.xcarchive
+*.ipa
+
+# Large data and binaries
+*.sqlite
+*.db
+*.mp4
+*.mov
+*.zip
+data/raw/
+assets/raw/
+
+# Logs and temp
+logs/
+*.log
+tmp/
+.DS_Store
+
+# IDE and OS
+.idea/
+.vscode/
+*.swp
+
+# Secrets (should also be in .gitignore)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated / lock files that shouldn't be read routinely
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Package.resolved

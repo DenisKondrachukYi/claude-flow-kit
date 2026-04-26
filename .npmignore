@@ -1,0 +1,9 @@
+.github/
+docs/
+test/
+scripts/
+CONTRIBUTING.md
+.gitignore
+*.tgz
+node_modules/
+.DS_Store
