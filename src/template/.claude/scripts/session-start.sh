@@ -24,7 +24,25 @@ ACTIVE_CHANGE=""
 NEXT_TASK=""
 PROGRESS=""
 if [ -d "$CHANGES_DIR" ]; then
-  ACTIVE_CHANGE=$(ls -t "$CHANGES_DIR" 2>/dev/null | grep -v README | head -1)
+  # Cross-platform sort by mtime (BSD stat on macOS, GNU stat on Linux).
+  if stat -f "%m %N" "$CHANGES_DIR" >/dev/null 2>&1; then
+    SORTED_CHANGES=$(find "$CHANGES_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null \
+                       | xargs -0 -I {} stat -f "%m %N" {} 2>/dev/null \
+                       | sort -rn | cut -d' ' -f2-)
+  elif stat -c "%Y %n" "$CHANGES_DIR" >/dev/null 2>&1; then
+    SORTED_CHANGES=$(find "$CHANGES_DIR" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null \
+                       | xargs -0 -I {} stat -c "%Y %n" {} 2>/dev/null \
+                       | sort -rn | cut -d' ' -f2-)
+  else
+    SORTED_CHANGES=$(find "$CHANGES_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort)
+  fi
+  ACTIVE_CHANGE=$(echo "$SORTED_CHANGES" | while IFS= read -r path; do
+                    [ -z "$path" ] && continue
+                    n=$(basename "$path")
+                    case "$n" in README*) continue ;; esac
+                    echo "$n"
+                    break
+                  done)
   if [ -n "$ACTIVE_CHANGE" ] && [ -f "$CHANGES_DIR/$ACTIVE_CHANGE/tasks.md" ]; then
     # Знаходимо перший незакритий task
     NEXT_TASK=$(grep -m1 -n "^- \[ \]" "$CHANGES_DIR/$ACTIVE_CHANGE/tasks.md" 2>/dev/null || echo "no pending tasks")

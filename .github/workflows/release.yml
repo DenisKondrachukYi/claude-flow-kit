@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -26,9 +26,17 @@ jobs:
         run: npm run smoke-test
 
       - name: Publish to npm
+        if: ${{ env.NPM_TOKEN != '' }}
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Skip npm publish (no NPM_TOKEN)
+        if: ${{ env.NPM_TOKEN == '' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "NPM_TOKEN secret not set — skipping npm publish. Set it in repo secrets to enable auto-publish."
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

@@ -10,12 +10,14 @@ if [ "$1" = "-v" ] || [ "$1" = "--verbose" ]; then
   VERBOSE=true
 fi
 
-# Colors (ANSI)
+# Colors (ANSI). RED/BLUE reserved for future sections.
 BOLD='\033[1m'
 DIM='\033[2m'
+# shellcheck disable=SC2034
 RED='\033[31m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
+# shellcheck disable=SC2034
 BLUE='\033[34m'
 CYAN='\033[36m'
 GRAY='\033[90m'
@@ -24,6 +26,24 @@ RESET='\033[0m'
 CHANGES_DIR="docs/changes"
 HOT_FILE="docs/state/hot.md"
 DECISIONS_FILE="docs/state/decisions.md"
+
+# Cross-platform list of subdirectories sorted by mtime (newest first).
+# macOS uses BSD stat (-f), Linux uses GNU stat (-c). Falls back to ls -t.
+_list_changes_by_mtime() {
+  local dir="$1"
+  [ -d "$dir" ] || return 0
+  if stat -f "%m %N" "$dir" >/dev/null 2>&1; then
+    find "$dir" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null \
+      | xargs -0 -I {} stat -f "%m %N" {} 2>/dev/null \
+      | sort -rn | cut -d' ' -f2-
+  elif stat -c "%Y %n" "$dir" >/dev/null 2>&1; then
+    find "$dir" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null \
+      | xargs -0 -I {} stat -c "%Y %n" {} 2>/dev/null \
+      | sort -rn | cut -d' ' -f2-
+  else
+    find "$dir" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sort
+  fi
+}
 
 # ─── Header ───────────────────────────────────────────────
 printf "\n${BOLD}📊 Project Status${RESET} "
@@ -62,9 +82,14 @@ if [ ! -d "$CHANGES_DIR" ]; then
   printf "  ${DIM}docs/changes/ не існує${RESET}\n\n"
 else
   FOUND=0
-  # Сортування за датою у назві (YYYY-MM-DD-slug), нові перші
-  for change_dir in $(ls -t "$CHANGES_DIR" 2>/dev/null | grep -v '^README' | grep -v '^archive'); do
-    CHANGE_PATH="$CHANGES_DIR/$change_dir"
+  # Сортування за датою у назві (YYYY-MM-DD-slug), нові перші.
+  # Use find+sort instead of ls|grep (shellcheck SC2010).
+  while IFS= read -r change_path; do
+    change_dir=$(basename "$change_path")
+    case "$change_dir" in
+      README*|archive*) continue ;;
+    esac
+    CHANGE_PATH="$change_path"
     TASKS_FILE="$CHANGE_PATH/tasks.md"
     [ ! -d "$CHANGE_PATH" ] && continue
     
@@ -89,8 +114,8 @@ else
         EMPTY=$((9 - FILLED))
         FILLED_STR=""
         EMPTY_STR=""
-        for i in $(seq 1 $FILLED); do FILLED_STR="${FILLED_STR}█"; done
-        for i in $(seq 1 $EMPTY); do EMPTY_STR="${EMPTY_STR}░"; done
+        for _ in $(seq 1 "$FILLED"); do FILLED_STR="${FILLED_STR}█"; done
+        for _ in $(seq 1 "$EMPTY"); do EMPTY_STR="${EMPTY_STR}░"; done
         BAR_LINE="$(printf "${YELLOW}${FILLED_STR}${EMPTY_STR}${RESET}")"
         STATUS_LINE="$(printf "${YELLOW}${DONE}/${TOTAL}${RESET} (${PERCENT}%%)")"
       fi
@@ -131,7 +156,7 @@ else
       printf "\n  ${BOLD}%s${RESET}\n" "$change_dir"
       printf "  ${DIM}no tasks.md yet${RESET}\n"
     fi
-  done
+  done < <(_list_changes_by_mtime "$CHANGES_DIR")
   
   if [ "$FOUND" -eq 0 ]; then
     printf "  ${DIM}no active changes${RESET}\n"
@@ -171,13 +196,18 @@ fi
 
 # ─── Pipeline status (для active change який не completed) ────
 if [ -n "$FOUND" ] && [ "$FOUND" -gt 0 ]; then
-  # Знаходимо перший change з незакритими tasks
+  # Знаходимо перший change з незакритими tasks (sorted by mtime, skip README/archive)
   ACTIVE_WORK=""
-  for c in $(ls -t "$CHANGES_DIR" 2>/dev/null | grep -v '^README' | grep -v '^archive'); do
-    [ -f "$CHANGES_DIR/$c/tasks.md" ] && \
-      grep -q "^- \[ \]" "$CHANGES_DIR/$c/tasks.md" 2>/dev/null && \
-      ACTIVE_WORK="$c" && break
-  done
+  while IFS= read -r entry; do
+    name=$(basename "$entry")
+    case "$name" in
+      README*|archive*) continue ;;
+    esac
+    if [ -f "$entry/tasks.md" ] && grep -q "^- \[ \]" "$entry/tasks.md" 2>/dev/null; then
+      ACTIVE_WORK="$name"
+      break
+    fi
+  done < <(_list_changes_by_mtime "$CHANGES_DIR")
   
   if [ -n "$ACTIVE_WORK" ]; then
     printf "${BOLD}🚀 Pipeline${RESET} ${DIM}(active: %s)${RESET}\n" "$ACTIVE_WORK"
