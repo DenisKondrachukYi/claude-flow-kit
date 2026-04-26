@@ -25,8 +25,8 @@
   "author": "Denis Kondrachuk",
   "type": "module",
   "bin": {
-    "claude-flow-kit": "./bin/cli.js",
-    "cfk": "./bin/cli.js"
+    "claude-flow-kit": "bin/cli.js",
+    "cfk": "bin/cli.js"
   },
   "files": [
     "bin",
