@@ -18,3 +18,8 @@ test-results/
 dist/
 build/
 *.tgz
+
+# VitePress build output
+docs-site/.vitepress/cache/
+docs-site/.vitepress/dist/
+docs-site/node_modules/

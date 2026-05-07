@@ -1,0 +1,16 @@
+{
+  "name": "claude-flow-kit-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node ./sync-docs.mjs",
+    "predev": "node ./sync-docs.mjs",
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
+  },
+  "devDependencies": {
+    "vitepress": "^1.4.0"
+  }
+}

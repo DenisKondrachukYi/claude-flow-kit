@@ -1,0 +1,7 @@
+# All .md files in this directory are synced from ../docs/ at build time.
+# Only index.md is the source-of-truth for this dir; ignore the rest.
+*.md
+!index.md
+node_modules/
+.vitepress/cache/
+.vitepress/dist/

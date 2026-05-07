@@ -1,5 +1,6 @@
 .github/
 docs/
+docs-site/
 test/
 scripts/
 CONTRIBUTING.md
