@@ -10,6 +10,7 @@ import { runStatus } from '../src/lib/status.js';
 import { runDoctor } from '../src/lib/doctor.js';
 import { runUpgrade } from '../src/lib/upgrade.js';
 import { runAdd, runList } from '../src/lib/add.js';
+import { checkForUpdates } from '../src/lib/update-notifier.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgPath = resolve(__dirname, '..', 'package.json');
@@ -48,6 +49,10 @@ Flags for init:
   --yes, -y         Non-interactive mode (auto-detected when CI=true).
   --reset-preferences  Wipe ~/.config/claude-flow-kit/config.json before init.
   --disable-git     Reserved (no-op currently).
+
+Universal flags:
+  --no-update-check Skip the daily npm registry update check.
+                    Also: NO_UPDATE_NOTIFIER=1 env var. Auto-skipped in CI.
 
 Examples:
   npx claude-flow-kit init                      # current dir
@@ -106,6 +111,7 @@ async function main() {
     else if (a === '--reset-preferences') flags.resetPreferences = true;
     else if (a === '--disable-git') flags.disableGit = true;
     else if (a === '--installed') flags.installed = true;
+    else if (a === '--no-update-check') flags.noUpdateCheck = true;
     else if (a.startsWith('-')) {
       console.error(`Unknown flag: ${a}`);
       return 1;
@@ -119,6 +125,9 @@ async function main() {
     console.error(`Template directory missing: ${templateDir}`);
     return 1;
   }
+
+  // Fire-and-forget update check; never blocks the CLI.
+  checkForUpdates(pkg.version, { disable: flags.noUpdateCheck }).catch(() => {});
 
   switch (cmd) {
     case 'init':
