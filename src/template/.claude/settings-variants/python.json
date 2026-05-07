@@ -10,33 +10,62 @@
   },
   "permissions": {
     "allow": [
-      "Bash(git diff:*)",
       "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff --stat)",
+      "Bash(git diff --cached)",
+      "Bash(git diff HEAD)",
+      "Bash(git diff --name-only:*)",
       "Bash(git log:*)",
       "Bash(git branch:*)",
-      "Bash(git show:*)",
-      "Bash(uv:*)",
-      "Bash(python:*)",
-      "Bash(python3:*)",
-      "Bash(pip:*)",
-      "Bash(pytest:*)",
-      "Bash(ruff:*)",
-      "Bash(mypy:*)",
+      "Bash(git show --stat:*)",
+      "Bash(git show --name-only:*)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(pwd)",
       "Bash(qmd query:*)",
       "Read(**)",
       "Grep(**)",
-      "Glob(**)"
+      "Glob(**)",
+      "Bash(uv:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pip:*)",
+      "Bash(pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(sudo:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(nc:*)",
+      "Bash(ncat:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(eval:*)",
+      "Bash(chmod 777:*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(.ssh/**)",
+      "Read(**/.ssh/**)",
       "Write(.env)",
       "Write(.env.*)",
       "Edit(.env)",
       "Edit(.env.*)",
+      "Write(.git/**)",
+      "Edit(.git/**)",
+      "Write(.ssh/**)",
+      "Edit(.ssh/**)",
+      "Write(.claude/settings.json)",
+      "Edit(.claude/settings.json)",
+      "Write(.claude/scripts/**)",
+      "Edit(.claude/scripts/**)",
       "Write(docs/specs/**)",
       "Edit(docs/specs/**)",
       "Write(.venv/**)",
@@ -46,13 +75,34 @@
   },
   "hooks": {
     "SessionStart": [
-      { "hooks": [{ "type": "command", "command": "bash .claude/scripts/session-start.sh" }] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/session-start.sh"
+          }
+        ]
+      }
     ],
     "PreCompact": [
-      { "hooks": [{ "type": "command", "command": "cp docs/state/hot.md docs/state/hot.md.precompact 2>/dev/null || true" }] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cp docs/state/hot.md docs/state/hot.md.precompact 2>/dev/null || true"
+          }
+        ]
+      }
     ],
     "PostCompact": [
-      { "hooks": [{ "type": "command", "command": "bash .claude/scripts/post-compact.sh" }] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/scripts/post-compact.sh"
+          }
+        ]
+      }
     ],
     "Stop": [
       {

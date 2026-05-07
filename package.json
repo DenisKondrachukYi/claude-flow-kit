@@ -39,7 +39,9 @@
     "test": "node --test test/",
     "lint:shell": "shellcheck src/template/.claude/scripts/*.sh",
     "lint:json": "find src/template -name '*.json' -exec node -e 'JSON.parse(require(\"fs\").readFileSync(process.argv[1]))' {} \\;",
-    "smoke-test": "bash scripts/smoke-test.sh"
+    "smoke-test": "bash scripts/smoke-test.sh",
+    "gen:settings": "node scripts/gen-settings-variants.mjs",
+    "check:settings": "node scripts/gen-settings-variants.mjs --check"
   },
   "engines": {
     "node": ">=18"

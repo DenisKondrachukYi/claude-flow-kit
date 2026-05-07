@@ -30,6 +30,9 @@ jobs:
       - name: Validate JSON
         run: npm run lint:json
 
+      - name: Check settings variants in sync
+        run: npm run check:settings
+
       - name: Run smoke test
         run: npm run smoke-test
 
