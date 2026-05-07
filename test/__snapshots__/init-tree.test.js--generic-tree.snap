@@ -34,6 +34,7 @@
 .claude/settings.json
 .claude/shared/
 .claude/shared/wiki-bridge.md
+.claude-flow-kit.json
 .claudeignore
 .gitignore
 .mcp.json

@@ -2,6 +2,7 @@
 import { existsSync, readdirSync, statSync, copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { c, banner, ok, warn, info, hr } from './print.js';
+import { readProjectConfig } from './config.js';
 
 // Files we NEVER overwrite — they contain user edits
 const USER_OWNED = [
@@ -47,10 +48,14 @@ export async function runUpgrade({ templateDir, flags }) {
     return 1;
   }
 
+  // M3: read project config; user can extend USER_OWNED via 'preserve' array.
+  const projectConfig = readProjectConfig(cwd);
+  const userPreserve = new Set([...USER_OWNED, ...projectConfig.preserve]);
+
   let updated = 0;
-  let preserved = 0;
 
   for (const rel of FRAMEWORK_OWNED) {
+    if (userPreserve.has(rel)) continue; // belt-and-braces: never overwrite preserved
     const srcPath = join(templateDir, rel);
     const dstPath = join(cwd, rel);
     if (!existsSync(srcPath)) continue;
@@ -66,11 +71,12 @@ export async function runUpgrade({ templateDir, flags }) {
     }
   }
 
-  preserved = USER_OWNED.length;
-
   hr();
   ok(`${updated} framework files updated`);
-  info(c.dim(`${preserved} user-owned files preserved (CLAUDE.md, hot.md, etc.)`));
+  info(c.dim(`${userPreserve.size} user-owned files preserved (CLAUDE.md, hot.md, etc.)`));
+  if (projectConfig.preserve.length > 0) {
+    info(c.dim(`(${projectConfig.preserve.length} additional from .claude-flow-kit.json)`));
+  }
   hr();
   info(c.dim('Run `git diff` to review changes.'));
   return 0;

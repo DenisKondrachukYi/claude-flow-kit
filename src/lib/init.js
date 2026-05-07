@@ -8,6 +8,7 @@ import { stdin as input, stdout as output } from 'node:process';
 
 import { detectStack, applyStackSettings } from './stack.js';
 import { c, banner, ok, warn, fail, info, hr } from './print.js';
+import { writeUserConfig, writeProjectConfig, resetUserConfig, readUserConfig } from './config.js';
 
 const PROTECTED_FILES = ['CLAUDE.md', 'AGENTS.md', '.claude'];
 const VALID_STACKS = ['nextjs', 'node-typescript', 'python', 'go', 'generic'];
@@ -17,6 +18,12 @@ export async function runInit({ targetDir, templateDir, flags, version }) {
   if (flags.stack && !VALID_STACKS.includes(flags.stack)) {
     fail(`Unknown stack '${flags.stack}'. Valid: ${VALID_STACKS.join(', ')}`);
     return 1;
+  }
+
+  // M3: --reset-preferences wipes user config.
+  if (flags.resetPreferences) {
+    resetUserConfig();
+    ok('User preferences reset.');
   }
 
   const target = resolve(process.cwd(), targetDir);
@@ -50,10 +57,14 @@ export async function runInit({ targetDir, templateDir, flags, version }) {
   const existing = detectExisting(target);
   if (existing.found && !flags.force && !flags.dryRun) {
     warn(`Existing claude-flow-kit detected: ${existing.detected.join(', ')}`);
-    const ans = await prompt('Continue? Use --force to overwrite. (y/N): ');
-    if (!/^y(es)?$/i.test(ans)) {
-      info('Aborted.');
-      return 0;
+    if (flags.yes) {
+      info('--yes given: skipping existing files (use --force to overwrite).');
+    } else {
+      const ans = await prompt('Continue? Use --force to overwrite. (y/N): ');
+      if (!/^y(es)?$/i.test(ans)) {
+        info('Aborted.');
+        return 0;
+      }
     }
   }
 
@@ -93,6 +104,17 @@ export async function runInit({ targetDir, templateDir, flags, version }) {
           chmodSync(join(scriptsDir, f), 0o755);
         }
       }
+    }
+  }
+
+  // Persist config: project + user (last used stack).
+  if (!flags.dryRun) {
+    try {
+      writeProjectConfig(target, { stack: detectedStack });
+      writeUserConfig({ stack: detectedStack, lastUsedAt: new Date().toISOString() });
+    } catch (err) {
+      // Non-fatal — config persistence is convenience, not correctness.
+      info(c.dim(`(could not persist config: ${err.message})`));
     }
   }
 

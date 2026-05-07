@@ -37,8 +37,12 @@ Flags for init:
   --stack <name>    Force stack (nextjs|node-typescript|python|go|generic).
                     Default: auto-detect.
   --force           Overwrite existing CLAUDE.md/.claude/ without prompt.
-  --no-install-deps Skip dependency hints at the end.
+  --skip-install    Skip dependency hints at the end.
+                    Aliases: --no-install-deps
   --dry-run         Print what would be done, don't write files.
+  --yes, -y         Non-interactive mode (auto-detected when CI=true).
+  --reset-preferences  Wipe ~/.config/claude-flow-kit/config.json before init.
+  --disable-git     Reserved (no-op currently).
 
 Examples:
   npx claude-flow-kit init                      # current dir
@@ -70,16 +74,31 @@ async function main() {
     noInstallDeps: false,
     dryRun: false,
     verbose: false,
+    yes: false,
+    resetPreferences: false,
+    skipInstall: false,
+    disableGit: false,
   };
   const positionals = [];
+
+  // Auto-detect CI: enables --yes by default.
+  if (process.env.CI === 'true' || process.env.CI === '1') {
+    flags.yes = true;
+  }
 
   for (let i = 1; i < args.length; i++) {
     const a = args[i];
     if (a === '--stack') flags.stack = args[++i];
     else if (a === '--force') flags.force = true;
-    else if (a === '--no-install-deps') flags.noInstallDeps = true;
+    else if (a === '--no-install-deps' || a === '--skip-install') {
+      flags.noInstallDeps = true;
+      flags.skipInstall = true;
+    }
     else if (a === '--dry-run') flags.dryRun = true;
     else if (a === '-v' || a === '--verbose') flags.verbose = true;
+    else if (a === '-y' || a === '--yes') flags.yes = true;
+    else if (a === '--reset-preferences') flags.resetPreferences = true;
+    else if (a === '--disable-git') flags.disableGit = true;
     else if (a.startsWith('-')) {
       console.error(`Unknown flag: ${a}`);
       return 1;
