@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-07
+
+Discovery + freshness + supply-chain pin. Three M-targeted improvements
+landed in a single release:
+
+### Added
+
+- **`.claude-plugin/marketplace.json`** — install via Claude Code's
+  `/plugin marketplace add DenisKondrachukYi/claude-flow-kit`. Captures users
+  who never run npm. README documents both install paths.
+- **Compatibility matrix** in README (cfk × Claude Code × Node.js).
+- **Update notifier** (`src/lib/update-notifier.js`) — zero-dep banner that
+  checks npm registry once per 24h and prints "Update available" on stderr.
+  Honors `NO_UPDATE_NOTIFIER=1`, `CI=true`, `--no-update-check`, non-TTY.
+  1.5s timeout, never blocks the CLI on network failure.
+- **`docs/security-upgrades.md`** — quarterly bump cadence and rationale
+  for pinned MCP versions, override instructions for users who want to
+  customize without modifying the template.
+
+### Changed
+
+- **All MCP `@latest` tags pinned** to explicit semver in `.mcp.json`,
+  `.mcp.optional.json`, and `statusLine` of all settings variants:
+  - `@upstash/context7-mcp@2.2.4`
+  - `@modelcontextprotocol/server-sequential-thinking@2025.12.18`
+  - `@owloops/claude-powerline@1.26.0`
+  - `@pimzino/spec-workflow-mcp@2.2.5`
+  - `@bitbonsai/mcpvault@0.11.0`
+  - `@modelcontextprotocol/server-memory@2026.1.26`
+- **`bin/cli.js`** invokes `checkForUpdates()` on every command (fire-and-forget).
+- **README** has a "Two install paths" section, compatibility table.
+
+### Tests
+
+- 11 new tests (39 → 42 → 50 total): `update-notifier.test.js` (8),
+  `no-latest-pins.test.js` (3).
+- Snapshot rebaselined for new pinned `.mcp.json` content.
+
+### Security
+
+- D1, D2 closed: no more `@latest` MCP fetches on every Claude session.
+
 ## [0.2.0] - 2026-05-07
 
 Hardening + UX release. 4 HIGH and 6 MEDIUM security findings fixed,

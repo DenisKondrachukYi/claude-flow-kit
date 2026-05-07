@@ -1,6 +1,6 @@
 {
   "name": "claude-flow-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Production-ready Claude Code project template with orchestration patterns, status dashboard, and stack-aware setup. Works on new and existing projects.",
   "keywords": [
     "claude",

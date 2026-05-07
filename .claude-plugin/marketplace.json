@@ -8,6 +8,7 @@
   "metadata": {
     "description": "Production-ready Claude Code project template with orchestration patterns, hooks, slash commands, and stack-aware setup",
     "version": "0.3.0",
+    "since": "0.3.0",
     "homepage": "https://deniskondrachukyi.github.io/claude-flow-kit/",
     "repository": "https://github.com/DenisKondrachukYi/claude-flow-kit",
     "license": "MIT"

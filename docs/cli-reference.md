@@ -1,10 +1,10 @@
 # CLI Reference
 
 > Auto-generated from `cfk --help` at build time.
-> Version: `0.2.0`
+> Version: `0.3.0`
 
 ```
-claude-flow-kit 0.2.0
+claude-flow-kit 0.3.0
 Production-ready Claude Code project template with orchestration.
 
 Usage:
@@ -36,6 +36,10 @@ Flags for init:
   --yes, -y         Non-interactive mode (auto-detected when CI=true).
   --reset-preferences  Wipe ~/.config/claude-flow-kit/config.json before init.
   --disable-git     Reserved (no-op currently).
+
+Universal flags:
+  --no-update-check Skip the daily npm registry update check.
+                    Also: NO_UPDATE_NOTIFIER=1 env var. Auto-skipped in CI.
 
 Examples:
   npx claude-flow-kit init                      # current dir
