@@ -1,10 +1,10 @@
 # CLI Reference
 
 > Auto-generated from `cfk --help` at build time.
-> Version: `0.1.0`
+> Version: `0.2.0`
 
 ```
-claude-flow-kit 0.1.0
+claude-flow-kit 0.2.0
 Production-ready Claude Code project template with orchestration.
 
 Usage:
