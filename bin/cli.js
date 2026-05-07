@@ -9,6 +9,7 @@ import { runInit } from '../src/lib/init.js';
 import { runStatus } from '../src/lib/status.js';
 import { runDoctor } from '../src/lib/doctor.js';
 import { runUpgrade } from '../src/lib/upgrade.js';
+import { runAdd, runList } from '../src/lib/add.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkgPath = resolve(__dirname, '..', 'package.json');
@@ -26,8 +27,12 @@ Commands:
   init [path]       Scaffold template into a project (new or existing).
                     Auto-detects stack (Next.js, Node/TS, Python, Go).
                     Default path: current directory.
-  status            Show progress dashboard for current project.
-  status -v         Verbose: show phases inside each change.
+  add <component>   Add a single component (e.g. status-dashboard).
+                    Run \`cfk list\` to see available components.
+  list              List components and their installed status.
+                      ● installed   ◐ partial   ○ not added
+  status [-v]       Show progress dashboard for current project.
+                    -v / --verbose: show phases inside each change.
   doctor            Diagnose installation: hooks, permissions, deps.
   upgrade           Pull latest template updates while preserving your edits.
   --help, -h        Show this help.
@@ -68,7 +73,7 @@ async function main() {
     return 0;
   }
 
-  const flags = {
+    const flags = {
     stack: null,
     force: false,
     noInstallDeps: false,
@@ -78,6 +83,7 @@ async function main() {
     resetPreferences: false,
     skipInstall: false,
     disableGit: false,
+    installed: false,
   };
   const positionals = [];
 
@@ -99,6 +105,7 @@ async function main() {
     else if (a === '-y' || a === '--yes') flags.yes = true;
     else if (a === '--reset-preferences') flags.resetPreferences = true;
     else if (a === '--disable-git') flags.disableGit = true;
+    else if (a === '--installed') flags.installed = true;
     else if (a.startsWith('-')) {
       console.error(`Unknown flag: ${a}`);
       return 1;
@@ -121,6 +128,11 @@ async function main() {
         flags,
         version: pkg.version,
       });
+    case 'add':
+      return runAdd({ component: positionals[0], templateDir, flags });
+    case 'list':
+    case 'ls':
+      return runList({ flags });
     case 'status':
       return runStatus({ flags });
     case 'doctor':

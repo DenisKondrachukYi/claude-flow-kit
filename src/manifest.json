@@ -1,0 +1,87 @@
+{
+  "$schema": "./manifest.schema.json",
+  "version": 1,
+  "components": {
+    "status-dashboard": {
+      "description": "CLI dashboard for active changes (cfk status)",
+      "files": [
+        ".claude/commands/status.md",
+        ".claude/scripts/status.sh"
+      ]
+    },
+    "hooks": {
+      "description": "All 4 lifecycle hooks (SessionStart, PreCompact, PostCompact, TaskCompleted)",
+      "files": [
+        ".claude/scripts/session-start.sh",
+        ".claude/scripts/post-compact.sh",
+        ".claude/scripts/task-completed.sh"
+      ]
+    },
+    "agents": {
+      "description": "Two user subagents: explorer (read-only) and reviewer (fresh-context reviewer)",
+      "files": [
+        ".claude/agents/explorer.md",
+        ".claude/agents/reviewer.md"
+      ]
+    },
+    "patterns": {
+      "description": "5 orchestration patterns: orchestrator-worker, writer-reviewer, wave-parallel, adversarial-debate, pipeline-chain",
+      "files": [
+        ".claude/patterns/README.md",
+        ".claude/patterns/orchestrator-worker.md",
+        ".claude/patterns/writer-reviewer.md",
+        ".claude/patterns/wave-parallel.md",
+        ".claude/patterns/adversarial-debate.md",
+        ".claude/patterns/pipeline-chain.md"
+      ]
+    },
+    "memory-bridge": {
+      "description": "Vault-bridge skill for QMD-mediated reads (avoids polluting context)",
+      "files": [
+        ".claude/shared/wiki-bridge.md"
+      ]
+    },
+    "ritual-commands": {
+      "description": "/start, /handoff, /sync — session ritual commands",
+      "files": [
+        ".claude/commands/start.md",
+        ".claude/commands/handoff.md",
+        ".claude/commands/sync.md"
+      ]
+    },
+    "pipelines": {
+      "description": "/ship-feature, /ship-full-stack-feature, /api-first-feature pipelines",
+      "files": [
+        ".claude/commands/ship-feature.md",
+        ".claude/commands/ship-full-stack-feature.md",
+        ".claude/commands/api-first-feature.md"
+      ]
+    },
+    "debug-commands": {
+      "description": "/fix-prod-bug, /debug-systematic, /spec-interview commands",
+      "files": [
+        ".claude/commands/fix-prod-bug.md",
+        ".claude/commands/debug-systematic.md",
+        ".claude/commands/spec-interview.md"
+      ]
+    },
+    "living-docs": {
+      "description": "docs/state and docs/project structure (hot.md, decisions.md, project.md, etc.)",
+      "files": [
+        "docs/state/hot.md",
+        "docs/state/decisions.md",
+        "docs/state/glossary.md",
+        "docs/project/product.md",
+        "docs/project/tech.md",
+        "docs/project/structure.md"
+      ]
+    },
+    "specs-and-changes": {
+      "description": "docs/specs/ and docs/changes/ scaffolding (OpenSpec workflow)",
+      "files": [
+        "docs/specs/README.md",
+        "docs/changes/README.md"
+      ]
+    }
+  }
+}
