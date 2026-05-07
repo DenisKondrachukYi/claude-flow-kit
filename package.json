@@ -37,8 +37,8 @@
     "SECURITY.md"
   ],
   "scripts": {
-    "test": "node --test test/",
-    "test:update": "UPDATE_SNAPSHOTS=1 node --test test/",
+    "test": "node --test test/*.test.js",
+    "test:update": "UPDATE_SNAPSHOTS=1 node --test test/*.test.js",
     "lint:shell": "shellcheck src/template/.claude/scripts/*.sh",
     "lint:json": "find src/template -name '*.json' -exec node -e 'JSON.parse(require(\"fs\").readFileSync(process.argv[1]))' {} \\;",
     "smoke-test": "bash scripts/smoke-test.sh",
