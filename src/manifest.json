@@ -25,14 +25,23 @@
       ]
     },
     "patterns": {
-      "description": "5 orchestration patterns: orchestrator-worker, writer-reviewer, wave-parallel, adversarial-debate, pipeline-chain",
+      "description": "6 orchestration patterns: orchestrator-worker, writer-reviewer, wave-parallel, adversarial-debate, pipeline-chain, ralph-loop",
       "files": [
         ".claude/patterns/README.md",
         ".claude/patterns/orchestrator-worker.md",
         ".claude/patterns/writer-reviewer.md",
         ".claude/patterns/wave-parallel.md",
         ".claude/patterns/adversarial-debate.md",
-        ".claude/patterns/pipeline-chain.md"
+        ".claude/patterns/pipeline-chain.md",
+        ".claude/patterns/ralph-loop.md"
+      ]
+    },
+    "ralph-loop": {
+      "description": "Standalone Ralph loop pattern — autonomous one-task-per-iteration shell loop",
+      "files": [
+        ".claude/patterns/ralph-loop.md",
+        ".claude/commands/ralph.md",
+        ".claude/scripts/ralph.sh"
       ]
     },
     "memory-bridge": {

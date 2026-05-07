@@ -7,6 +7,7 @@
 .claude/commands/debug-systematic.md
 .claude/commands/fix-prod-bug.md
 .claude/commands/handoff.md
+.claude/commands/ralph.md
 .claude/commands/ship-feature.md
 .claude/commands/ship-full-stack-feature.md
 .claude/commands/spec-interview.md
@@ -18,10 +19,12 @@
 .claude/patterns/adversarial-debate.md
 .claude/patterns/orchestrator-worker.md
 .claude/patterns/pipeline-chain.md
+.claude/patterns/ralph-loop.md
 .claude/patterns/wave-parallel.md
 .claude/patterns/writer-reviewer.md
 .claude/scripts/
 .claude/scripts/post-compact.sh
+.claude/scripts/ralph.sh
 .claude/scripts/session-start.sh
 .claude/scripts/status.sh
 .claude/scripts/task-completed.sh

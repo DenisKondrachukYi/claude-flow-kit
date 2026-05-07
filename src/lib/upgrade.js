@@ -32,6 +32,7 @@ const FRAMEWORK_OWNED = [
   '.claude/commands/fix-prod-bug.md',
   '.claude/commands/debug-systematic.md',
   '.claude/commands/spec-interview.md',
+  '.claude/commands/ralph.md',
   '.claude/agents/explorer.md',
   '.claude/agents/reviewer.md',
   '.claude/settings-variants/',
