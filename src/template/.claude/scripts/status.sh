@@ -47,8 +47,8 @@ _list_changes_by_mtime() {
 
 # ─── Header ───────────────────────────────────────────────
 printf "\n${BOLD}📊 Project Status${RESET} "
-printf "${GRAY}$(date +"%Y-%m-%d %H:%M")${RESET}\n"
-printf "${GRAY}$(pwd)${RESET}\n"
+printf "${GRAY}%s${RESET}\n" "$(date +'%Y-%m-%d %H:%M')"
+printf "${GRAY}%s${RESET}\n" "$(pwd)"
 printf "${GRAY}────────────────────────────────────────────────────${RESET}\n\n"
 
 # ─── Git state ────────────────────────────────────────────
@@ -219,8 +219,10 @@ if [ -n "$FOUND" ] && [ "$FOUND" -gt 0 ]; then
     { [ -f "$CHANGES_DIR/$ACTIVE_WORK/design.md" ] || [ -f "$CHANGES_DIR/$ACTIVE_WORK/openapi.yaml" ]; } && STAGE2="${GREEN}2.Design✓${RESET}"
     [ -f "$CHANGES_DIR/$ACTIVE_WORK/tasks.md" ] && STAGE3="${GREEN}3.Tasks✓${RESET}"
     
+    # Render the colored stage labels through %s so STAGE* values are not
+    # interpreted as printf format strings (A4 hardening).
     printf "  %s → %s → %s → 4.Implement → 5.Review → 6.Archive\n\n" \
-      "$(printf "$STAGE1")" "$(printf "$STAGE2")" "$(printf "$STAGE3")"
+      "$STAGE1" "$STAGE2" "$STAGE3"
   fi
 fi
 

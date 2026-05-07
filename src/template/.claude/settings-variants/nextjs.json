@@ -75,7 +75,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd $CLAUDE_PROJECT_DIR && pnpm typecheck && pnpm lint --max-warnings 0 && pnpm vitest run --reporter=dot",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && pnpm typecheck && pnpm lint --max-warnings 0 && pnpm vitest run --reporter=dot",
             "timeout": 300
           }
         ]

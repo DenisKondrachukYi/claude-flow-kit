@@ -96,6 +96,12 @@ function copyDir(src, dst, opts) {
   for (const e of entries) {
     const s = join(src, e.name);
     const d = join(dst, e.name);
+    // B1: never follow symlinks. A malicious npm tarball or git clone could
+    // contain a symlink pointing at /etc/passwd or /../../ to escape target.
+    if (e.isSymbolicLink()) {
+      opts.stats.skipped++;
+      continue;
+    }
     if (e.isDirectory()) {
       if (!existsSync(d)) {
         if (!opts.flags.dryRun) mkdirSync(d, { recursive: true });

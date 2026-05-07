@@ -83,6 +83,8 @@ function copyDirRecursive(src, dst, dryRun) {
   for (const entry of readdirSync(src, { withFileTypes: true })) {
     const s = join(src, entry.name);
     const d = join(dst, entry.name);
+    // B1: skip symlinks (see init.js for rationale).
+    if (entry.isSymbolicLink()) continue;
     if (entry.isDirectory()) {
       count += copyDirRecursive(s, d, dryRun);
     } else if (entry.isFile()) {

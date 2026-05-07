@@ -39,7 +39,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        # Pinned to SHA (D3 hardening). Bump via Dependabot.
+        uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # 2026-04-26
         with:
           scandir: ./src/template/.claude/scripts
           severity: warning

@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd $CLAUDE_PROJECT_DIR && pnpm tsc --noEmit && pnpm eslint . --max-warnings 0 && pnpm vitest run --reporter=dot",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && pnpm tsc --noEmit && pnpm eslint . --max-warnings 0 && pnpm vitest run --reporter=dot",
             "timeout": 240
           }
         ]

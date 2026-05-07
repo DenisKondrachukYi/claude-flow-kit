@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # GitHub Actions: keep workflows up-to-date.
+  # Pinned-to-SHA Actions get auto-bumped to the latest SHA matching the major.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # npm — currently zero runtime deps; this watches devDependencies if added.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "npm"

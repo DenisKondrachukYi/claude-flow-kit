@@ -2,7 +2,12 @@
 # PostCompact hook — після компакції контексту, повторно інжектимо hot.md
 # Щоб після auto-compact Claude не "забув" де він і з чим працює
 
-set -e
+set -euo pipefail
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo '{}'
+  exit 0
+fi
 
 HOT_FILE="docs/state/hot.md"
 
@@ -12,8 +17,5 @@ if [ ! -f "$HOT_FILE" ]; then
 fi
 
 CONTENT=$(head -60 "$HOT_FILE")
-ESCAPED=$(echo "## Post-compact context refresh
-
-$CONTENT" | jq -Rs .)
-
-echo "{\"additionalContext\": $ESCAPED}"
+ESCAPED=$(printf '%s\n%s' "## Post-compact context refresh" "$CONTENT" | jq -Rs .)
+printf '{"additionalContext": %s}\n' "$ESCAPED"
