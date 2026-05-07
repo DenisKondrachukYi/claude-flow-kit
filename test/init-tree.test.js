@@ -12,17 +12,17 @@ function tmp(prefix) {
   return mkdtempSync(join(tmpdir(), `cfk-${prefix}-`));
 }
 
+const TEST_FILE_PATH = import.meta.url.replace('file://', '');
+
 test('init generic produces expected file tree', (t) => {
-  t.filePath = import.meta.url.replace('file://', '');
   const d = tmp('generic');
   const r = runCli(['init', d, '--no-install-deps']);
   assert.equal(r.status, 0, `CLI failed: ${r.stderr}`);
   const tree = walkTree(d).filter((p) => !p.endsWith('hot.md.precompact'));
-  matchSnapshot(t, 'generic-tree', tree);
+  matchSnapshot({ filePath: TEST_FILE_PATH }, 'generic-tree', tree);
 });
 
-test('init nextjs applies correct settings.json', (t) => {
-  t.filePath = import.meta.url.replace('file://', '');
+test('init nextjs applies correct settings.json', () => {
   const d = tmp('nextjs');
   const r = runCli(['init', d, '--stack', 'nextjs', '--no-install-deps']);
   assert.equal(r.status, 0);

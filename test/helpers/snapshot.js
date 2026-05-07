@@ -4,8 +4,9 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 
-export function matchSnapshot(t, name, actual) {
-  const testFile = t.filePath ?? guessTestFile(t);
+export function matchSnapshot(ctx, name, actual) {
+  // ctx is either a node:test TestContext (legacy) or a plain { filePath }.
+  const testFile = (ctx && typeof ctx.filePath === 'string') ? ctx.filePath : guessTestFile();
   const snapDir = join(dirname(testFile), '__snapshots__');
   mkdirSync(snapDir, { recursive: true });
   const snapFile = join(snapDir, `${basename(testFile)}--${slug(name)}.snap`);
@@ -32,7 +33,7 @@ function slug(s) {
   return s.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
 }
 
-function guessTestFile(t) {
+function guessTestFile() {
   // Node's TestContext doesn't expose its origin. Fall back to argv[1].
   return process.argv[1] ?? 'unknown.test.js';
 }
