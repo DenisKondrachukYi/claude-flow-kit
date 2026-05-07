@@ -1,0 +1,13 @@
+# claude-flow-kit — appended on init.
+# These artifacts should never be committed. Merge with your existing .gitignore.
+
+# PreCompact backup created by hooks (transient session state).
+docs/state/hot.md.precompact
+
+# Local-only Claude Code state.
+.claude/cache/
+.claude/local/
+.claude/agent-memory-local/
+
+# claude-flow-kit user-config (per project).
+# Project config (.claude-flow-kit.json) IS committed; user prefs are not.

@@ -9,7 +9,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write    # for GitHub Release creation
+      id-token: write    # for npm provenance attestation (OIDC)
     steps:
       - uses: actions/checkout@v4
 
@@ -25,9 +26,12 @@ jobs:
       - name: Run smoke test
         run: npm run smoke-test
 
-      - name: Publish to npm
+      - name: Run unit tests
+        run: npm test
+
+      - name: Publish to npm with provenance
         if: ${{ env.NPM_TOKEN != '' }}
-        run: npm publish --access public
+        run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -39,6 +43,6 @@ jobs:
         run: echo "NPM_TOKEN secret not set — skipping npm publish. Set it in repo secrets to enable auto-publish."
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2 (2026-04-26)
         with:
           generate_release_notes: true

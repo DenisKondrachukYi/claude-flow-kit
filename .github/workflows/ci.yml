@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main]
 
+# I1: explicit minimal permissions at workflow level.
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Test on ${{ matrix.os }} / Node ${{ matrix.node }}
@@ -35,6 +39,10 @@ jobs:
 
       - name: Run smoke test
         run: npm run smoke-test
+
+      - name: Run unit tests
+        run: npm test
+        if: matrix.node == 22
 
   shellcheck:
     name: ShellCheck

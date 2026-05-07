@@ -1,7 +1,8 @@
 // init: scaffold template into a project (new or existing)
-import { existsSync, mkdirSync, statSync, copyFileSync, readdirSync, readFileSync, writeFileSync, chmodSync } from 'node:fs';
+import { existsSync, mkdirSync, statSync, copyFileSync, readdirSync, readFileSync, writeFileSync, chmodSync, unlinkSync } from 'node:fs';
 import { resolve, join, relative, dirname } from 'node:path';
 import { execSync } from 'node:child_process';
+import { homedir } from 'node:os';
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
@@ -9,9 +10,24 @@ import { detectStack, applyStackSettings } from './stack.js';
 import { c, banner, ok, warn, fail, info, hr } from './print.js';
 
 const PROTECTED_FILES = ['CLAUDE.md', 'AGENTS.md', '.claude'];
+const VALID_STACKS = ['nextjs', 'node-typescript', 'python', 'go', 'generic'];
 
 export async function runInit({ targetDir, templateDir, flags, version }) {
+  // H2: validate stack against allowlist before any file ops.
+  if (flags.stack && !VALID_STACKS.includes(flags.stack)) {
+    fail(`Unknown stack '${flags.stack}'. Valid: ${VALID_STACKS.join(', ')}`);
+    return 1;
+  }
+
   const target = resolve(process.cwd(), targetDir);
+
+  // B4: refuse scaffolding into '/' or the user's home directory directly.
+  // These are foot-guns that overwrite global configs.
+  if (target === '/' || target === resolve(homedir())) {
+    fail(`Refusing to scaffold into ${target}.`);
+    info('Pass an explicit subdirectory (e.g. cfk init my-project).');
+    return 1;
+  }
 
   // Create dir if not exists
   let isNewDir = false;
@@ -59,6 +75,13 @@ export async function runInit({ targetDir, templateDir, flags, version }) {
     const applied = applyStackSettings(target, detectedStack);
     if (applied) ok(`Applied ${detectedStack} settings`);
     else info('Using default settings.json');
+  }
+
+  // Merge .gitignore.template into target's .gitignore (F2 hardening).
+  // Source file ships as `.gitignore.template` because npm pack/publish
+  // strips standalone `.gitignore` files. We resolve it after copy.
+  if (!flags.dryRun) {
+    mergeGitignore(target);
   }
 
   // Make scripts executable
@@ -127,6 +150,30 @@ async function prompt(q) {
   const answer = await rl.question(q);
   rl.close();
   return answer.trim();
+}
+
+function mergeGitignore(target) {
+  const templatePath = join(target, '.gitignore.template');
+  const targetPath = join(target, '.gitignore');
+  if (!existsSync(templatePath)) return;
+  const templateContent = readFileSync(templatePath, 'utf8');
+  if (existsSync(targetPath)) {
+    const existing = readFileSync(targetPath, 'utf8');
+    // Append only lines not already present (skip blank/comment uniqueness check).
+    const existingLines = new Set(existing.split('\n').map((l) => l.trim()).filter(Boolean));
+    const newLines = templateContent
+      .split('\n')
+      .filter((l) => l.trim() && !l.trim().startsWith('#') && !existingLines.has(l.trim()));
+    if (newLines.length > 0) {
+      const appendBlock = `\n# === claude-flow-kit ===\n${newLines.join('\n')}\n`;
+      writeFileSync(targetPath, existing + appendBlock);
+    }
+  } else {
+    // Strip the trailing comment line about the template; ship the body.
+    writeFileSync(targetPath, templateContent.replace(/^# claude-flow-kit.*\n# .*\n\n/, ''));
+  }
+  // Cleanup the staging file so it never lands in the user's tree.
+  unlinkSync(templatePath);
 }
 
 function printNextSteps(stack, isNewDir, targetDir) {

@@ -3,8 +3,10 @@
 > Production-ready Claude Code project template. Orchestration patterns, status dashboard, stack-aware setup. Works on new and existing projects.
 
 [![npm version](https://img.shields.io/npm/v/claude-flow-kit.svg)](https://www.npmjs.com/package/claude-flow-kit)
+[![npm provenance](https://img.shields.io/badge/provenance-verified-brightgreen)](https://www.npmjs.com/package/claude-flow-kit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/DenisKondrachukYi/claude-flow-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisKondrachukYi/claude-flow-kit/actions/workflows/ci.yml)
+[![Zero deps](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](./package.json)
 
 ## What it does
 
@@ -176,6 +178,14 @@ This refreshes framework files (`.claude/scripts/`, `.claude/patterns/`, slash c
 - [Pimzino/spec-workflow-mcp](https://github.com/Pimzino/spec-workflow-mcp) — web dashboard for specs
 
 claude-flow-kit composes patterns from these projects into a single drop-in installer.
+
+## Security
+
+`claude-flow-kit` ships hooks that run automatically on every Claude session start. Only run `cfk init` in repositories you trust.
+
+The CLI itself has **zero runtime dependencies**, ships with **npm provenance attestations** (Sigstore) starting v0.2, and uses **explicit permission allowlists** rather than wildcards in default `.claude/settings.json`.
+
+For threat model, scope, supported versions, and how to report a vulnerability, see [SECURITY.md](./SECURITY.md).
 
 ## License
 
