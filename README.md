@@ -36,6 +36,37 @@ cfk status
 cfk doctor
 ```
 
+## Two install paths
+
+Pick the route that matches how you work:
+
+### npm (full CLI) — recommended
+
+```bash
+npx claude-flow-kit init
+```
+
+Includes everything: scaffolding, `cfk add`, `cfk status`, `cfk doctor`, `cfk upgrade`, settings variants per stack, and the full template.
+
+### Claude Code plugin marketplace — patterns + hooks only
+
+Inside Claude Code:
+
+```
+/plugin marketplace add DenisKondrachukYi/claude-flow-kit
+/plugin install claude-flow-kit-template@claude-flow-kit-marketplace
+```
+
+Lighter footprint: ships hooks, slash commands, agents, and orchestration patterns to your existing `.claude/` directory. No scaffolding, no `docs/state/`, no settings variants. Use this when you already have a project structure and just want the cfk patterns.
+
+## Compatibility
+
+| cfk version | Claude Code | Node.js |
+|---|---|---|
+| 0.3.x | ≥2.1 | ≥18 |
+| 0.2.x | ≥2.1 | ≥18 |
+| 0.1.x | ≥2.1 | ≥18 |
+
 ## What gets installed
 
 ```

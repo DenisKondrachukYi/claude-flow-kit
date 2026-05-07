@@ -31,6 +31,7 @@
   "files": [
     "bin",
     "src",
+    ".claude-plugin",
     "README.md",
     "LICENSE",
     "CHANGELOG.md",

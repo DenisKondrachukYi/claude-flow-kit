@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-plugin-marketplace",
+  "name": "claude-flow-kit-marketplace",
+  "owner": {
+    "name": "Denis Kondrachuk",
+    "url": "https://github.com/DenisKondrachukYi"
+  },
+  "metadata": {
+    "description": "Production-ready Claude Code project template with orchestration patterns, hooks, slash commands, and stack-aware setup",
+    "version": "0.3.0",
+    "homepage": "https://deniskondrachukyi.github.io/claude-flow-kit/",
+    "repository": "https://github.com/DenisKondrachukYi/claude-flow-kit",
+    "license": "MIT"
+  },
+  "plugins": [
+    {
+      "name": "claude-flow-kit-template",
+      "source": "./src/template/.claude",
+      "description": "Hooks, commands, patterns, agents — the cfk template (no scaffolding)",
+      "version": "0.3.0",
+      "tags": ["orchestration", "spec-driven", "hooks", "patterns"]
+    }
+  ]
+}
